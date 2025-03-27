@@ -4,4 +4,4 @@ export enum method {
     post = "post",
     patch = "patch",
     delete = "delete",
-  }
+}
