@@ -1,6 +1,9 @@
+import FitnessList from "./components/custom/FitnessList"
+
 function App() {
   return (
     <>
+    <FitnessList/>
     </>
   )
 }
