@@ -1,0 +1,96 @@
+{
+  "fitness": [
+    {
+      "id": 1,
+      "name": "Running",
+      "description": "Aerobic exercise that uses your legs and core to move your body.",
+      "duration": 60,
+      "caloriesBurned": 100
+    },
+    {
+      "id": "fbda",
+      "data": {
+        "name": "фывавыфаывфа",
+        "sets": [
+          {
+            "done": false
+          },
+          {
+            "done": false
+          },
+          {
+            "done": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "63aa",
+      "data": {
+        "name": "фывафыва",
+        "sets": [
+          {
+            "done": false
+          },
+          {
+            "done": false
+          },
+          {
+            "done": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "bdf0",
+      "data": {
+        "name": "ывафвыфа",
+        "sets": [
+          {
+            "done": false
+          },
+          {
+            "done": false
+          },
+          {
+            "done": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "9a49",
+      "data": {
+        "name": "ыфваывфа",
+        "sets": [
+          {
+            "done": false
+          },
+          {
+            "done": false
+          },
+          {
+            "done": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "9ba6",
+      "data": {
+        "name": "ыфваыв",
+        "sets": [
+          {
+            "done": false
+          },
+          {
+            "done": false
+          },
+          {
+            "done": false
+          }
+        ]
+      }
+    }
+  ]
+}
