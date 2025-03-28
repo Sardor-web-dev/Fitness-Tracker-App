@@ -1,12 +1,12 @@
-import FitnessList from "./components/custom/FitnessList"
+import FitnessList from "./components/custom/FitnessList";
+import { FitnessProvider } from "./contexts/FitnessContext";
 
 function App() {
   return (
-    <>
-    <FitnessList/>
-    </>
-  )
+    <FitnessProvider>
+      <FitnessList />
+    </FitnessProvider>
+  );
 }
 
-export default App
-    
+export default App;

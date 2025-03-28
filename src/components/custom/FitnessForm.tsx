@@ -1,22 +1,46 @@
-import { useApi } from "@/hooks/UseApi";
+import { useRef, useEffect, useContext } from "react";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { FitnessContext } from "@/contexts/FitnessContext";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { method } from "@/types/methodsApi";
 
 interface FitnessFormProps {
   setModal: (value: boolean) => void;
+}0
+
+// Тип для формы
+interface ExerciseFormData {
+  name: string;
+  description: string;
+  duration: number;
 }
-const FitnessForm = ({ setModal }: FitnessFormProps) => {
-  const { register, handleSubmit } = useForm();
-  const { fetchData } = useApi(import.meta.env.VITE_PUBLIC_API);
 
-  const onSubmit: SubmitHandler<Record<string, any>> = (name) => {
+const FitnessForm: React.FC<FitnessFormProps> = ({ setModal }) => {
+  const { register, handleSubmit, reset } = useForm<ExerciseFormData>();
+  const fitnessContext = useContext(FitnessContext);
 
-    fetchData("/fitness", method.post, name).then((res) =>
-      console.log(res?.data)
-    );
+  if (!fitnessContext) {
+    throw new Error("FitnessForm must be used within a FitnessProvider");
+  }
+
+  const { addExercise } = fitnessContext;
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
+
+  const onSubmit: SubmitHandler<ExerciseFormData> = (data) => {
+    const newExercise = {
+      id: `ex_${Date.now()}`,
+      name: data.name,
+      description: data.description,
+      duration: Number(data.duration),
+    };
+    addExercise(newExercise);
+    reset();
+    inputRef.current?.focus();
     setModal(false);
   };
 
@@ -24,31 +48,38 @@ const FitnessForm = ({ setModal }: FitnessFormProps) => {
     <div className="fixed inset-0 flex items-center justify-center bg-black/50">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="bg-red-500 w-[400px] h-[400px] p-6 rounded-lg shadow-lg flex flex-col gap-4"
+        className="bg-white w-[400px] p-6 rounded-lg shadow-xl flex flex-col gap-4"
       >
-        <Label className="text-white text-lg">Enter Exercise</Label>
+        <Label className="text-lg font-semibold">Добавить упражнение</Label>
         <Input
+          ref={inputRef}
           {...register("name", { required: true })}
           type="text"
-          placeholder="Enter exercise"
-          className="p-3 rounded-md text-black border border-gray-300 w-full"
+          placeholder="Название упражнения"
+          className="p-3 rounded-md border border-gray-300 w-full"
         />
         <Input
           {...register("description", { required: true })}
           type="text"
-          placeholder="Enter exercise"
-          className="p-3 rounded-md text-black border border-gray-300 w-full"
+          placeholder="Описание"
+          className="p-3 rounded-md border border-gray-300 w-full"
         />
         <Input
-          {...register("duration", { required: true })}
-          type="text"
-          placeholder="Enter exercise"
-          className="p-3 rounded-md text-black border border-gray-300 w-full"
+          {...register("duration", { required: true, valueAsNumber: true })}
+          type="number"
+          placeholder="Длительность (минуты)"
+          className="p-3 rounded-md border border-gray-300 w-full"
         />
-        <div className="flex justify-between">
-          <Button type="submit">Add Exercise</Button>
-          <Button onClick={() => setModal(false)} type="button">
-            Cancel
+        <div className="flex justify-between mt-2">
+          <Button type="submit" className="bg-blue-500 hover:bg-blue-600">
+            Добавить
+          </Button>
+          <Button
+            onClick={() => setModal(false)}
+            type="button"
+            className="bg-gray-500 hover:bg-gray-600"
+          >
+            Отмена
           </Button>
         </div>
       </form>
@@ -57,11 +88,3 @@ const FitnessForm = ({ setModal }: FitnessFormProps) => {
 };
 
 export default FitnessForm;
-
-// {
-//     "id": "11",
-//     "name": "Zumba",
-//     "description": "Aerobic exercise that uses dance moves to burn calories and build strength.",
-//     "duration": 60,
-//     "caloriesBurned": 150
-//   }

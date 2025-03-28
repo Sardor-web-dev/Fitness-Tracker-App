@@ -1,33 +1,30 @@
+import { useContext } from "react";
+import { FitnessContext } from "@/contexts/FitnessContext";
 import { Button } from "../ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import { item } from "./FitnessList";
-import { useApi } from "@/hooks/UseApi";
-import { method } from "@/types/methodsApi";
 
+interface FitnessItemProps {
+  id: number;
+  name: string;
+  description: string;
+  duration: number;
+}
 
-const FitnessItem = ({id, name, description, duration, onDelete}: item,) => {
-    const { fetchData } = useApi(import.meta.env.VITE_PUBLIC_API);
+const FitnessItem = ({ id, name, description, duration }: FitnessItemProps) => {
+  const { deleteExercise } = useContext(FitnessContext);
 
-    async function handleDelete() {
-        const url = `/fitness/${id}`;
-        console.log("Удаляем по URL:", url);
-      
-        try {
-          await fetchData(url, method.delete);
-          onDelete(id);
-        } catch (error) {
-          console.error("Ошибка при удалении:", error);
-        }
-      }
   return (
-    <>
-      <Card className="flex w-[400px] h-[200px] flex-col gap-2" key={id}>
-        <CardTitle>{name}</CardTitle>
-        <CardHeader>{description}</CardHeader>
-        <CardContent>{duration}</CardContent>
-        <Button onClick={handleDelete} className="cursor-pointer">Delete task</Button>
-      </Card>
-    </>
+    <Card className="flex w-[350px] p-4 flex-col gap-2 shadow-lg">
+      <CardTitle className="text-lg font-semibold">{name}</CardTitle>
+      <CardHeader className="text-sm text-gray-500">{description}</CardHeader>
+      <CardContent className="text-md">Время: {duration} мин</CardContent>
+      <Button
+        onClick={() => deleteExercise(id)}
+        className="bg-red-500 hover:bg-red-600 mt-2"
+      >
+        Удалить
+      </Button>
+    </Card>
   );
 };
 
