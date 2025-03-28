@@ -7,7 +7,7 @@ import { Label } from "../ui/label";
 
 interface FitnessFormProps {
   setModal: (value: boolean) => void;
-}0
+}
 
 // Тип для формы
 interface ExerciseFormData {
@@ -18,6 +18,7 @@ interface ExerciseFormData {
 
 const FitnessForm: React.FC<FitnessFormProps> = ({ setModal }) => {
   const { register, handleSubmit, reset } = useForm<ExerciseFormData>();
+  const inputRef = useRef<HTMLInputElement>(null);
   const fitnessContext = useContext(FitnessContext);
 
   if (!fitnessContext) {
@@ -25,7 +26,6 @@ const FitnessForm: React.FC<FitnessFormProps> = ({ setModal }) => {
   }
 
   const { addExercise } = fitnessContext;
-  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     inputRef.current?.focus();
@@ -58,6 +58,7 @@ const FitnessForm: React.FC<FitnessFormProps> = ({ setModal }) => {
           placeholder="Название упражнения"
           className="p-3 rounded-md border border-gray-300 w-full"
         />
+
         <Input
           {...register("description", { required: true })}
           type="text"
@@ -65,7 +66,10 @@ const FitnessForm: React.FC<FitnessFormProps> = ({ setModal }) => {
           className="p-3 rounded-md border border-gray-300 w-full"
         />
         <Input
-          {...register("duration", { required: true, valueAsNumber: true })}
+          {...register("duration", {
+            required: true,
+            setValueAs: (v) => Number(v) || 0,
+          })}
           type="number"
           placeholder="Длительность (минуты)"
           className="p-3 rounded-md border border-gray-300 w-full"
